@@ -865,8 +865,32 @@ void display(void)
 		// determine render style and set glPolygonMode appropriately
 
 		// draw body part
-		glColor3f(1.0, 1.0, 1.0);
-		drawCube();
+		if (renderStyle == SOLID) {
+			glColor3f(1.0, 1.0, 1.0);
+			glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+			drawCube();
+		}
+		
+		else if (renderStyle == OUTLINED){
+			glColor3f(0.0, 1.0, 1.0);
+			glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+			glEnable(GL_POLYGON_OFFSET_FILL);
+			glPolygonOffset(1, 1);
+			drawCube();
+			glDisable(GL_POLYGON_OFFSET_FILL);
+			
+			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+			glColor3f(0.0, 0.0, 0.0);
+			drawCube();
+							
+		}
+		else if (renderStyle == WIREFRAME) {
+			
+			glColor3f(1.0, 0.0, 0.0);
+			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+			drawCube();
+		}
+		
 
 	glPopMatrix();
 	//
