@@ -990,7 +990,7 @@ void drawPenguin() {
 					 joint_ui_data->getDOF(Keyframe::ROOT_TRANSLATE_Z));
 		glRotatef(joint_ui_data->getDOF(Keyframe::ROOT_ROTATE_X), 1.0, 0.0, 0.0);
 		glRotatef(joint_ui_data->getDOF(Keyframe::ROOT_ROTATE_Y), 0.0, 1.0, 0.0);
-		glRotatef(joint_ui_data->getDOF(Keyframe::ROOT_ROTATE_Z), 0.0, 0.0, 1.0);
+		glRotatef(joint_ui_data->getDOF(Keyframe::ROOT_ROTATE_Z) * -1, 0.0, 0.0, 1.0);
 		//glRotatef(30.0, 0.0, 1.0, 0.0);
 		//glRotatef(30.0, 1.0, 0.0, 0.0);
 
@@ -1065,8 +1065,12 @@ void drawPenguin() {
 		glTranslatef(0.0, -0.8, 0.0);
 		glScalef(0.3, 0.8, 0.2);
 		drawCube();
-		
+			
+			// draw left elbow
+
 		glPopMatrix();
+		
+		
 		
 		// draw right arm
 		glPushMatrix();
@@ -1081,7 +1085,13 @@ void drawPenguin() {
 		drawCube();
 		
 		glPopMatrix();
+		
+		// Draw left hip
+		
+		glPushMatrix();
+		drawCube();
 
+		glPopMatrix();
 		
 	glPopMatrix();
 }
