@@ -304,14 +304,18 @@ void updateKeyframeButton(int)
 	///////////////////////////////////////////////////////////
 
 	// Get the keyframe ID from the UI
-	int keyframeID = 0;
+	int keyframeID = joint_ui_data->getID();
 
 	// Update the 'maxValidKeyframe' index variable
 	// (it will be needed when doing the interpolation)
-
+	if (keyframeID > maxValidKeyframe) {maxValidKeyframe = keyframeID;}
 	// Update the appropriate entry in the 'keyframes' array
 	// with the 'joint_ui_data' data
-
+	keyframes[keyframeID].setID(keyframeID);
+	keyframes[keyframeID].setTime(joint_ui_data->getTime());
+	for (int i = 0; i < 24; i++) {
+		keyframes[keyframeID].setDOF(i, joint_ui_data->getDOF(i));
+	}
 	// Let the user know the values have been updated
 	sprintf(msg, "Status: Keyframe %d updated successfully", keyframeID);
 	status->set_text(msg);
