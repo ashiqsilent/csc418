@@ -195,6 +195,7 @@ void motion(int x, int y);
 // Functions to help draw the object
 Vector getInterpolatedJointDOFS(float time);
 void drawCube();
+void drawPenguin();
 
 
 // Image functions
@@ -852,23 +853,14 @@ void display(void)
     ///////////////////////////////////////////////////////////
 
 	// SAMPLE CODE **********
-	//
-	glPushMatrix();
-
-		// setup transformation for body part
-		glTranslatef(joint_ui_data->getDOF(Keyframe::ROOT_TRANSLATE_X),
-					 joint_ui_data->getDOF(Keyframe::ROOT_TRANSLATE_Y),
-					 joint_ui_data->getDOF(Keyframe::ROOT_TRANSLATE_Z));
-		glRotatef(30.0, 0.0, 1.0, 0.0);
-		glRotatef(30.0, 1.0, 0.0, 0.0);
 
 		// determine render style and set glPolygonMode appropriately
 
 		// draw body part
 		if (renderStyle == SOLID) {
-			glColor3f(1.0, 1.0, 1.0);
+			glColor3f(0.0, 0.3, 1.0);
 			glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-			drawCube();
+			drawPenguin();
 		}
 		
 		else if (renderStyle == OUTLINED){
@@ -876,24 +868,19 @@ void display(void)
 			glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1, 1);
-			drawCube();
+			drawPenguin();
 			glDisable(GL_POLYGON_OFFSET_FILL);
 			
 			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 			glColor3f(0.0, 0.0, 0.0);
-			drawCube();
-							
+			drawPenguin();				
 		}
 		else if (renderStyle == WIREFRAME) {
-			
 			glColor3f(1.0, 0.0, 0.0);
 			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-			drawCube();
+			drawPenguin();
 		}
 		
-
-	glPopMatrix();
-	//
 	// SAMPLE CODE **********
 
     // Execute any GL functions that are in the queue just to be safe
@@ -988,8 +975,61 @@ void drawCube()
 		glVertex3f(-1.0, -1.0, -1.0);
 		glVertex3f( 1.0, -1.0, -1.0);
 		glVertex3f( 1.0, -1.0,  1.0);
-		glVertex3f(-1.0, -1.0,  1.0);
+		glVertex3f(-1.0, -1.0,  1.0); 
 	glEnd();
+}
+
+// Draw the penguin
+void drawPenguin() {
+
+	glPushMatrix();
+
+		// setup transformation for body part
+		glTranslatef(joint_ui_data->getDOF(Keyframe::ROOT_TRANSLATE_X),
+					 joint_ui_data->getDOF(Keyframe::ROOT_TRANSLATE_Y),
+					 joint_ui_data->getDOF(Keyframe::ROOT_TRANSLATE_Z));
+		glRotatef(joint_ui_data->getDOF(Keyframe::ROOT_ROTATE_X), 1.0, 0.0, 0.0);
+		glRotatef(joint_ui_data->getDOF(Keyframe::ROOT_ROTATE_Y), 0.0, 1.0, 0.0);
+		glRotatef(joint_ui_data->getDOF(Keyframe::ROOT_ROTATE_Z), 0.0, 0.0, 1.0);
+		//glRotatef(30.0, 0.0, 1.0, 0.0);
+		//glRotatef(30.0, 1.0, 0.0, 0.0);
+
+		// draw torso/base
+		glBegin(GL_QUADS);
+			// front face
+			glVertex3f(-1.0, 1.0, 0.5);
+			glVertex3f( 1.0, 1.0, 0.5);
+			glVertex3f( 1.5,  -2.5, 0.5);
+			glVertex3f(-1.5,  -2.5, 0.5);
+			// back face
+			glVertex3f(-1.0, 1.0, -0.5);
+			glVertex3f( 1.0, 1.0, -0.5);
+			glVertex3f( 1.5,  -2.5, -0.5);
+			glVertex3f(-1.5,  -2.5, -0.5);
+			// top face
+			glVertex3f(-1.0, 1.0, 0.5);
+			glVertex3f( 1.0, 1.0, 0.5);
+			glVertex3f( 1.0,  1.0, -0.5);
+			glVertex3f(-1.0,  1.0, -0.5);
+			// bottom face
+			glVertex3f(-1.5, -2.5, 0.5);
+			glVertex3f( 1.5, -2.5, 0.5);
+			glVertex3f( 1.5, -2.5, -0.5);
+			glVertex3f(-1.5, -2.5, -0.5);
+			// right face
+			glVertex3f(1.0, 1.0, 0.5);
+			glVertex3f(1.5, -2.5, 0.5);
+			glVertex3f(1.5, -2.5, -0.5);
+			glVertex3f(1.0, 1.0, -0.5);
+			// left face
+			glVertex3f(-1.0, 1.0, 0.5);
+			glVertex3f(-1.5, -2.5, 0.5);
+			glVertex3f(-1.5, -2.5, -0.5);
+			glVertex3f(-1.0, 1.0, -0.5);
+			
+		glEnd();
+		
+	glPopMatrix();
 }
 
 ///////////////////////////////////////////////////////////
