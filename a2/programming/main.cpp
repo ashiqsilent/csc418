@@ -160,7 +160,7 @@ const float SHOULDER_YAW_MIN     = -45.0;
 const float SHOULDER_YAW_MAX     =  45.0;
 const float SHOULDER_ROLL_MIN    = -45.0;
 const float SHOULDER_ROLL_MAX    =  45.0;
-const float HIP_PITCH_MIN        = -45.0;
+const float HIP_PITCH_MIN        = -0.0;
 const float HIP_PITCH_MAX        =  45.0;
 const float HIP_YAW_MIN          = -45.0;
 const float HIP_YAW_MAX          =  45.0;
@@ -1104,7 +1104,29 @@ void drawPenguin() {
 		
 		// Draw left hip
 		glPushMatrix();
-
+		glTranslatef(0.0, -2.5, 0.3);
+		glRotatef(joint_ui_data->getDOF(Keyframe::L_HIP_PITCH) * -1, 1.0, 0.0, 0.0);
+		glRotatef(joint_ui_data->getDOF(Keyframe::L_HIP_YAW), 0.0, 1.0, 0.0);
+		glRotatef(joint_ui_data->getDOF(Keyframe::L_HIP_ROLL) * -1.0, 0.0, 0.0, 1.0);
+		// Translate to the origin
+		glTranslatef(0.0, -0.5, 0.0);
+		glScalef(0.2, 0.5, 0.2);
+		drawCube();
+		
+		glPopMatrix();
+		
+		
+		// Draw the right hip
+		glPushMatrix();
+		glTranslatef(0.0, -2.5, -0.3);
+		glRotatef(joint_ui_data->getDOF(Keyframe::R_HIP_PITCH), 1.0, 0.0, 0.0);
+		glRotatef(joint_ui_data->getDOF(Keyframe::R_HIP_YAW), 0.0, 1.0, 0.0);
+		glRotatef(joint_ui_data->getDOF(Keyframe::R_HIP_ROLL) * -1.0, 0.0, 0.0, 1.0);
+		// Translate to the origin
+		glTranslatef(0.0, -0.5, 0.0);
+		glScalef(0.2, 0.5, 0.2);
+		drawCube();
+		
 		glPopMatrix();
 		
 	glPopMatrix();
