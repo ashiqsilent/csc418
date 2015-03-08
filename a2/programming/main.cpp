@@ -195,7 +195,7 @@ void motion(int x, int y);
 // Functions to help draw the object
 Vector getInterpolatedJointDOFS(float time);
 void drawCube();
-void drawPenguin();
+void drawPenguin(bool solid);
 
 
 // Image functions
@@ -797,6 +797,8 @@ void reshape(int w, int h)
 // animate() function.
 void display(void)
 {
+	glEnable(GL_DEPTH_TEST);
+	
     // Clear the screen with the background colour
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
 
@@ -858,27 +860,23 @@ void display(void)
 
 		// draw body part
 		if (renderStyle == SOLID) {
-			glColor3f(108.0/255, 98.0/255, 217.0/255);
 			glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-			drawPenguin();
+			drawPenguin(true);
 		}
 		
 		else if (renderStyle == OUTLINED){
-			glColor3f(0.0, 1.0, 1.0);
 			glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1, 1);
-			drawPenguin();
+			drawPenguin(true);
 			glDisable(GL_POLYGON_OFFSET_FILL);
 			
 			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-			glColor3f(0.0, 0.0, 0.0);
-			drawPenguin();				
+			drawPenguin(false);				
 		}
 		else if (renderStyle == WIREFRAME) {
-			glColor3f(0.0, 0.0, 0.0);
 			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-			drawPenguin();
+			drawPenguin(false);
 		}
 		
 	// SAMPLE CODE **********
@@ -980,7 +978,7 @@ void drawCube()
 }
 
 // Draw the penguin
-void drawPenguin() {
+void drawPenguin(bool solid) {
 
 	glPushMatrix();
 
@@ -995,6 +993,7 @@ void drawPenguin() {
 		//glRotatef(30.0, 1.0, 0.0, 0.0);
 
 		// draw torso/base
+		if (solid) {glColor3f(96.0/255, 209.0/255, 96.0/255);} else {glColor3f(0.0, 0.0, 0.0);}
 		glBegin(GL_QUADS);
 			// front face
 			glVertex3f(-1.0, 1.0, 0.5);
@@ -1033,6 +1032,7 @@ void drawPenguin() {
 		glTranslatef(0.0, 1.5, 0.0);
 		glRotatef(joint_ui_data->getDOF(Keyframe::HEAD), 0.0, 1.0, 0.0);
 		glScalef(1.2, 0.5, 0.5);
+		if (solid) {glColor3f(13.0/255, 76.0/255, 139.0/255);} else {glColor3f(0.0, 0.0, 0.0);}
 		drawCube();
 
 			// beak attached to head
@@ -1041,6 +1041,7 @@ void drawPenguin() {
 			glTranslatef(-1.5, 0.0 ,0.0);
 			glTranslatef(0.0, joint_ui_data->getDOF(Keyframe::BEAK), 0.0);
 			glScalef(0.5, 0.1, 0.1);
+			if (solid) {glColor3f(221.0/255, 28.0/255, 17.0/255);} else {glColor3f(0.0, 0.0, 0.0);}
 			drawCube();
 			glPopMatrix();
 			
@@ -1049,6 +1050,7 @@ void drawPenguin() {
 			glTranslatef(-1.5, -0.1 ,0.0);
 			glTranslatef(0.0, -1 * joint_ui_data->getDOF(Keyframe::BEAK), 0.0);
 			glScalef(0.5, 0.1, 0.1);
+			if (solid) {glColor3f(221.0/255, 28.0/255, 17.0/255);} else {glColor3f(0.0, 0.0, 0.0);}
 			drawCube();
 			glPopMatrix();
 		
@@ -1064,6 +1066,7 @@ void drawPenguin() {
 		// Translate to orgin so that rotation is correct
 		glTranslatef(0.0, -0.8, 0.0);
 		glScalef(0.3, 0.8, 0.2);
+		if (solid) {glColor3f(61.0/255, 162.0/255, 117.0/255);} else {glColor3f(0.0, 0.0, 0.0);}
 		drawCube();
 			// draw left elbow
 			glPushMatrix();
@@ -1074,6 +1077,7 @@ void drawPenguin() {
 			// Translate to origin
 			glTranslatef(0.3, -0.4, 0.0);
 			glScalef(0.3, 0.4, 0.2);
+			if (solid) {glColor3f(231.0/255, 179.0/255, 176.0/255);} else {glColor3f(0.0, 0.0, 0.0);}
 			drawCube();
 			glPopMatrix();
 			
@@ -1089,6 +1093,7 @@ void drawPenguin() {
 		// Translate to orgin so that rotation is correct
 		glTranslatef(0.0, -0.8, 0.0);
 		glScalef(0.3, 0.8, 0.2);
+		if (solid) {glColor3f(61.0/255, 162.0/255, 117.0/255);} else {glColor3f(0.0, 0.0, 0.0);}
 		drawCube();
 			// draw right elbow
 			glPushMatrix();
@@ -1099,6 +1104,7 @@ void drawPenguin() {
 			// Translate to origin
 			glTranslatef(0.3, -0.4, 0.0);
 			glScalef(0.3, 0.4, 0.2);
+			if (solid) {glColor3f(231.0/255, 179.0/255, 176.0/255);} else {glColor3f(0.0, 0.0, 0.0);}
 			drawCube();
 			glPopMatrix();			
 			
@@ -1113,6 +1119,7 @@ void drawPenguin() {
 		// Translate to the origin
 		glTranslatef(0.0, -0.5, 0.0);
 		glScalef(0.2, 0.5, 0.2);
+		if (solid) {glColor3f(221.0/255, 163.0/255, 38.0/255);} else {glColor3f(0.0, 0.0, 0.0);}
 		drawCube();
 			
 			// Draw left knee
@@ -1124,6 +1131,7 @@ void drawPenguin() {
 			// Traslate to origin
 			glTranslatef(-0.4, -0.04, 0.0);
 			glScalef(0.4, 0.04, 0.2);
+			if (solid) {glColor3f(170.0/255, 199.0/255, 24.0/255);} else {glColor3f(0.0, 0.0, 0.0);}
 			drawCube();
 			glPopMatrix();
 			
@@ -1138,6 +1146,7 @@ void drawPenguin() {
 		// Translate to the origin
 		glTranslatef(0.0, -0.5, 0.0);
 		glScalef(0.2, 0.5, 0.2);
+		if (solid) {glColor3f(221.0/255, 163.0/255, 38.0/255);} else {glColor3f(0.0, 0.0, 0.0);}
 		drawCube();
 			// Draw right knee
 			glPushMatrix();
@@ -1148,6 +1157,7 @@ void drawPenguin() {
 			// Traslate to origin
 			glTranslatef(-0.4, -0.04, 0.0);
 			glScalef(0.4, 0.04, 0.2);
+			if (solid) {glColor3f(170.0/255, 199.0/255, 24.0/255);} else {glColor3f(0.0, 0.0, 0.0);}
 			drawCube();
 			glPopMatrix();
 			
