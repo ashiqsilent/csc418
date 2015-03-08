@@ -169,7 +169,7 @@ const float HIP_ROLL_MAX         =  45.0;
 const float BEAK_MIN             =  0.0;
 const float BEAK_MAX             =  0.2;
 const float ELBOW_MIN            =  0.0;
-const float ELBOW_MAX            = 75.0;
+const float ELBOW_MAX            = 40.0;
 const float KNEE_MIN             =  0.0;
 const float KNEE_MAX             = 75.0;
 
@@ -1065,12 +1065,18 @@ void drawPenguin() {
 		glTranslatef(0.0, -0.8, 0.0);
 		glScalef(0.3, 0.8, 0.2);
 		drawCube();
-			
 			// draw left elbow
+			glPushMatrix();
+			// Counter the scale from arm
+			glScalef(10/3.0, 10/8.0, 5.0);
 
+			glRotatef(joint_ui_data->getDOF(Keyframe::L_ELBOW) * -1.0, 0.0, 0.0, 1.0);
+			glTranslatef(0.0, -1.2, 0.0);
+			glScalef(0.3, 0.4, 0.2);
+			drawCube();
+			glPopMatrix();
+			
 		glPopMatrix();
-		
-		
 		
 		// draw right arm
 		glPushMatrix();
@@ -1083,13 +1089,21 @@ void drawPenguin() {
 		glTranslatef(0.0, -0.8, 0.0);
 		glScalef(0.3, 0.8, 0.2);
 		drawCube();
-		
+			// draw right elbow
+			glPushMatrix();
+			// Counter the scale from arm
+			glScalef(10/3.0, 10/8.0, 5.0);
+
+			glRotatef(joint_ui_data->getDOF(Keyframe::R_ELBOW) * -1.0, 0.0, 0.0, 1.0);
+			glTranslatef(0.0, -1.2, 0.0);
+			glScalef(0.3, 0.4, 0.2);
+			drawCube();
+			glPopMatrix();			
+			
 		glPopMatrix();
 		
 		// Draw left hip
-		
 		glPushMatrix();
-		drawCube();
 
 		glPopMatrix();
 		
