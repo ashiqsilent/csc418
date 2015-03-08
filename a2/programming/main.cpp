@@ -171,7 +171,7 @@ const float BEAK_MAX             =  0.2;
 const float ELBOW_MIN            =  0.0;
 const float ELBOW_MAX            = 75.0;
 const float KNEE_MIN             =  0.0;
-const float KNEE_MAX             = 75.0;
+const float KNEE_MAX             = 25.0;
 
 
 // ***********  FUNCTION HEADER DECLARATIONS ****************
@@ -1114,9 +1114,20 @@ void drawPenguin() {
 		glTranslatef(0.0, -0.5, 0.0);
 		glScalef(0.2, 0.5, 0.2);
 		drawCube();
-		
+			
+			// Draw left knee
+			glPushMatrix();
+			// Counter scale from hip
+			glScalef(5.0, 2.0, 5.0);
+			glTranslatef(-0.1, -0.4, 0.0);
+			glRotatef(joint_ui_data->getDOF(Keyframe::L_KNEE) * -1.0, 0.0, 0.0, 1.0);
+			// Traslate to origin
+			glTranslatef(-0.4, -0.04, 0.0);
+			glScalef(0.4, 0.04, 0.2);
+			drawCube();
+			glPopMatrix();
+			
 		glPopMatrix();
-		
 		
 		// Draw the right hip
 		glPushMatrix();
@@ -1128,7 +1139,18 @@ void drawPenguin() {
 		glTranslatef(0.0, -0.5, 0.0);
 		glScalef(0.2, 0.5, 0.2);
 		drawCube();
-		
+			// Draw right knee
+			glPushMatrix();
+			// Counter scale from hip
+			glScalef(5.0, 2.0, 5.0);
+			glTranslatef(-0.1, -0.4, 0.0);
+			glRotatef(joint_ui_data->getDOF(Keyframe::R_KNEE) * -1.0, 0.0, 0.0, 1.0);
+			// Traslate to origin
+			glTranslatef(-0.4, -0.04, 0.0);
+			glScalef(0.4, 0.04, 0.2);
+			drawCube();
+			glPopMatrix();
+			
 		glPopMatrix();
 		
 	glPopMatrix();
