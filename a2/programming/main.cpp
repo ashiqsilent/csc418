@@ -154,7 +154,7 @@ const float ROOT_ROTATE_Z_MIN    = -180.0;
 const float ROOT_ROTATE_Z_MAX    =  180.0;
 const float HEAD_MIN             = -180.0;
 const float HEAD_MAX             =  180.0;
-const float SHOULDER_PITCH_MIN   = -45.0;
+const float SHOULDER_PITCH_MIN   =  0.0;
 const float SHOULDER_PITCH_MAX   =  45.0;
 const float SHOULDER_YAW_MIN     = -45.0;
 const float SHOULDER_YAW_MAX     =  45.0;
@@ -167,7 +167,7 @@ const float HIP_YAW_MAX          =  45.0;
 const float HIP_ROLL_MIN         = -45.0;
 const float HIP_ROLL_MAX         =  45.0;
 const float BEAK_MIN             =  0.0;
-const float BEAK_MAX             =  1.0;
+const float BEAK_MAX             =  0.2;
 const float ELBOW_MIN            =  0.0;
 const float ELBOW_MAX            = 75.0;
 const float KNEE_MIN             =  0.0;
@@ -858,7 +858,7 @@ void display(void)
 
 		// draw body part
 		if (renderStyle == SOLID) {
-			glColor3f(0.0, 0.3, 1.0);
+			glColor3f(108.0/255, 98.0/255, 217.0/255);
 			glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 			drawPenguin();
 		}
@@ -876,7 +876,7 @@ void display(void)
 			drawPenguin();				
 		}
 		else if (renderStyle == WIREFRAME) {
-			glColor3f(1.0, 0.0, 0.0);
+			glColor3f(0.0, 0.0, 0.0);
 			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 			drawPenguin();
 		}
@@ -1026,8 +1026,62 @@ void drawPenguin() {
 			glVertex3f(-1.5, -2.5, 0.5);
 			glVertex3f(-1.5, -2.5, -0.5);
 			glVertex3f(-1.0, 1.0, -0.5);
-			
 		glEnd();
+		
+		// draw head
+		glPushMatrix();
+		glTranslatef(0.0, 1.5, 0.0);
+		glRotatef(joint_ui_data->getDOF(Keyframe::HEAD), 0.0, 1.0, 0.0);
+		glScalef(1.2, 0.5, 0.5);
+		drawCube();
+
+			// beak attached to head
+			// draw upper beak
+			glPushMatrix();
+			glTranslatef(-1.5, 0.0 ,0.0);
+			glTranslatef(0.0, joint_ui_data->getDOF(Keyframe::BEAK), 0.0);
+			glScalef(0.5, 0.1, 0.1);
+			drawCube();
+			glPopMatrix();
+			
+			// draw lower beak
+			glPushMatrix();
+			glTranslatef(-1.5, -0.1 ,0.0);
+			glTranslatef(0.0, -1 * joint_ui_data->getDOF(Keyframe::BEAK), 0.0);
+			glScalef(0.5, 0.1, 0.1);
+			drawCube();
+			glPopMatrix();
+		
+		glPopMatrix();
+		
+		// draw left arm
+		glPushMatrix();
+		// Put the arm in correct position
+		glTranslatef(0.0, 0.6, 0.7);
+		glRotatef(joint_ui_data->getDOF(Keyframe::L_SHOULDER_PITCH) * -1.0, 1.0, 0.0, 0.0);
+		glRotatef(joint_ui_data->getDOF(Keyframe::L_SHOULDER_YAW), 0.0, 1.0, 0.0);
+		glRotatef(joint_ui_data->getDOF(Keyframe::L_SHOULDER_ROLL) * -1.0, 0.0, 0.0, 1.0);
+		// Translate to orgin so that rotation is correct
+		glTranslatef(0.0, -0.8, 0.0);
+		glScalef(0.3, 0.8, 0.2);
+		drawCube();
+		
+		glPopMatrix();
+		
+		// draw right arm
+		glPushMatrix();
+		// Put the arm in correct position
+		glTranslatef(0.0, 0.6, -0.7);
+		glRotatef(joint_ui_data->getDOF(Keyframe::R_SHOULDER_PITCH), 1.0, 0.0, 0.0);
+		glRotatef(joint_ui_data->getDOF(Keyframe::R_SHOULDER_YAW), 0.0, 1.0, 0.0);
+		glRotatef(joint_ui_data->getDOF(Keyframe::R_SHOULDER_ROLL) * -1.0, 0.0, 0.0, 1.0);
+		// Translate to orgin so that rotation is correct
+		glTranslatef(0.0, -0.8, 0.0);
+		glScalef(0.3, 0.8, 0.2);
+		drawCube();
+		
+		glPopMatrix();
+
 		
 	glPopMatrix();
 }
